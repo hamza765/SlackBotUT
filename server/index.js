@@ -80,7 +80,7 @@ app.use(express.static('./client'));
 // });
 
 
-app.listen(8080, function() {
+app.listen(process.env.PORT || 8080, function() {
     console.log("App running on port 8080!");
 });
 
