@@ -27,12 +27,21 @@ bot.on('start', function(data) {
 });
 
 bot.on('message', function(data) {
+    //if data object exists (there is a chat) proceed
     if (data.text) {
 
+        //save method
         if (data.text.includes('.save')){
+          //acknowledges method activated
           console.log(data);
           bot.postMessage(data.channel, 'I saw a save!');
-          bot.postMessage(data.channel, data.item.url_private_download);
+
+          //if it's a file, post the dl link
+          if(data.item.url_private_download){
+            bot.postMessage(data.channel, data.item.url_private_download);
+          }
+
+
 
         }
 
