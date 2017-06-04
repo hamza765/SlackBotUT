@@ -28,6 +28,15 @@ bot.on('start', function(data) {
 
 bot.on('message', function(data) {
     if (data.text) {
+
+        if (data.text.includes('.save')){
+          console.log(data);
+          bot.postMessage(data.channel, 'I saw a save!');
+          bot.postMessage(data.channel, data.item.url_private_download);
+
+        }
+
+
         if (data.text.startsWith('.countdown')) {
             var args = data.text.split(' ');
             var day = args[1];
