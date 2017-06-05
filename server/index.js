@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import api from './api';
 import bot from './lib/bot.js';
+import request from 'request';
+import fs from 'fs';
 mongoose.Promise = Promise;
 
 var app = express();
@@ -22,7 +24,7 @@ bot.on('start', function(data) {
         icon_emoji: ':cat:'
     };
 
-    //bot.postMessageToChannel('general', 'meow!', params);
+    bot.postMessageToChannel('general', "I'm alive!", params);
 
 });
 
@@ -33,12 +35,28 @@ bot.on('message', function(data) {
         //save method
         if (data.text.includes('.save')){
           //acknowledges method activated
-          console.log(data);
+          //console.log(data);
           bot.postMessage(data.channel, 'I saw a save!');
 
           //if it's a file, post the dl link
-          if(data.item.url_private_download){
-            bot.postMessage(data.channel, data.item.url_private_download);
+          if(data.file.url_private_download){
+            bot.postMessage(data.channel, data.file.url_private_download);
+            console.log(data.file.url_private_download)
+
+            //response from this url is an entire webpage. how do i get just the file?
+            request.get(data.file.url_private_download).on('response', function(response) {
+                  console.log(response.statusCode)
+                }).pipe(fs.writeFile(data.file.title)); //this doesn't seem to work properly
+
+            // request(data.file.url_private_download, function(error, response, body){
+            //     console.log('response'+response);
+            //     fs.writeFile('message.txt',response,function(){
+            //       console.log('file written');
+            //     })
+            //     //console.log('body'+body);
+            //
+            //
+            // });
           }
 
 
